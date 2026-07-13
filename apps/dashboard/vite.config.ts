@@ -6,24 +6,31 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: "shell",
-      remotes: {
-        catalog: "http://localhost:5001/assets/remoteEntry.js",
-        cart: "http://localhost:5002/assets/remoteEntry.js",
-        user: "http://localhost:5003/assets/remoteEntry.js",
-        dashboard: "http://localhost:5004/assets/remoteEntry.js",
+      name: "dashboard",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./App": "./src/App.tsx",
       },
-      shared: ["react", "react-dom", "react-router-dom", "zustand", "@mui/material"],
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "zustand",
+        "@mui/material",
+        "@react-shop/auth",
+        "@react-shop/shared",
+      ],
     }),
   ],
   server: {
-    port: 5000,
+    port: 5004,
     strictPort: true,
     cors: true,
   },
   preview: {
-    port: 5000,
+    port: 5004,
     strictPort: true,
+    cors: true,
   },
   build: {
     target: "esnext",

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "dev:web": "turbo run dev --filter=@react-shop/shell --filter=@react-shop/catalog --filter=@react-shop/cart --parallel",
+    "dev:platform": "turbo run dev --filter=@react-shop/shell --filter=@react-shop/user --filter=@react-shop/dashboard --filter=@react-shop/api --parallel",
     "dev:api": "pnpm --filter @react-shop/api start:dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
