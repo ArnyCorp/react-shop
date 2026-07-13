@@ -1,6 +1,7 @@
 import type { Preview } from "@storybook/react";
 import { useAuthStore } from "@react-shop/auth";
 import { permissionsForRole, type Role } from "@react-shop/shared";
+import { useLayoutEffect, type ReactNode } from "react";
 import { AppThemeProvider } from "../src/AppThemeProvider";
 
 const roleNames: Record<Role, string> = {
@@ -10,6 +11,30 @@ const roleNames: Record<Role, string> = {
   manager: "Mara Manager",
   admin: "Ada Admin",
 };
+
+type RoleSyncProps = {
+  role: Role;
+  children: ReactNode;
+};
+
+function RoleSync({ role, children }: RoleSyncProps) {
+  useLayoutEffect(() => {
+    const name = roleNames[role];
+
+    useAuthStore.setState({
+      accessToken: role === "guest" ? null : `storybook-${role}-token`,
+      user: {
+        id: `storybook-${role}`,
+        email: `${role}@react-shop.local`,
+        name,
+        role,
+        permissions: permissionsForRole(role),
+      },
+    });
+  }, [role]);
+
+  return <>{children}</>;
+}
 
 const preview: Preview = {
   globalTypes: {
@@ -61,18 +86,6 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const role = (context.globals.role ?? "admin") as Role;
-      const name = roleNames[role];
-
-      useAuthStore.setState({
-        accessToken: role === "guest" ? null : `storybook-${role}-token`,
-        user: {
-          id: `storybook-${role}`,
-          email: `${role}@react-shop.local`,
-          name,
-          role,
-          permissions: permissionsForRole(role),
-        },
-      });
 
       return (
         <AppThemeProvider>
@@ -83,7 +96,9 @@ const preview: Preview = {
             rel="stylesheet"
           />
           <div style={{ padding: 24, minHeight: "100vh" }}>
-            <Story />
+            <RoleSync role={role}>
+              <Story />
+            </RoleSync>
           </div>
         </AppThemeProvider>
       );
