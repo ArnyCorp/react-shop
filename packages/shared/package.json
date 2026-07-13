@@ -35,7 +35,8 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "echo \"lint ok\""
+    "lint": "echo \"lint ok\"",
+    "test": "vitest run"
   },
   "dependencies": {
     "zod": "^3.25.67",
@@ -53,6 +54,7 @@
     "@types/react": "^19.1.8",
     "react": "^19.1.0",
     "tsup": "^8.5.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.10"
   }
 }
