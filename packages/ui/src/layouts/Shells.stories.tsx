@@ -1,10 +1,15 @@
 import { Box, Stack } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
+import type { ComponentProps } from "react";
 import { EmptyState } from "../patterns/EmptyState";
 import { PageHeader } from "../patterns/PageHeader";
 import { StatCard } from "../patterns/StatCard";
 import { DashboardShell } from "./DashboardShell";
 import { UserShell } from "./UserShell";
+
+const StoryLink = ({ href, ...props }: ComponentProps<"a">) => (
+  <a href={href} data-story-link {...props} />
+);
 
 const meta = {
   title: "Layouts/Shells",
@@ -26,7 +31,7 @@ export const BothShells: Story = {
   render: () => (
     <Stack spacing={4}>
       <Box sx={{ overflow: "hidden", borderRadius: 4, border: "1px solid", borderColor: "divider" }}>
-        <UserShell>
+        <UserShell linkComponent={StoryLink} activeHref="/orders">
           <PageHeader
             eyebrow="Customer account"
             title="Welcome back"
@@ -36,7 +41,7 @@ export const BothShells: Story = {
       </Box>
 
       <Box sx={{ overflow: "hidden", borderRadius: 4, border: "1px solid", borderColor: "divider" }}>
-        <DashboardShell title="Operations overview">
+        <DashboardShell title="Operations overview" linkComponent={StoryLink} activeHref="/orders">
           <Box
             sx={{
               display: "grid",
@@ -44,8 +49,8 @@ export const BothShells: Story = {
               gap: 2,
             }}
           >
-            <StatCard value="42" label="Open orders" helperText="8 need review" href="#orders" />
-            <StatCard value="12" label="Active users" helperText="3 new this week" href="#users" />
+            <StatCard value="42" label="Open orders" helperText="8 need review" href="/orders" />
+            <StatCard value="12" label="Active users" helperText="3 new this week" href="/users" />
             <StatCard value="96%" label="Fulfillment SLA" helperText="On target" />
           </Box>
           <EmptyState
@@ -68,11 +73,11 @@ export const DashboardOnly: Story = {
     },
   },
   render: () => (
-    <DashboardShell title="Role-aware dashboard">
+    <DashboardShell title="Role-aware dashboard" linkComponent={StoryLink} activeHref="/users">
       <PageHeader
         eyebrow="Role toolbar demo"
         title="Dashboard navigation"
-        description="Overview remains visible; Users, Orders, Catalog, and Settings appear when the selected role grants the required permissions."
+        description="Overview remains visible; Users, Orders, and Settings appear when the selected role grants the required permissions."
       />
     </DashboardShell>
   ),

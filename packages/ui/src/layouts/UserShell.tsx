@@ -1,7 +1,7 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { AppBar, Box, Chip, Container, Stack, Toolbar, Typography } from "@mui/material";
 import { useAuthStore } from "@react-shop/auth";
-import type { ReactNode } from "react";
+import type { ElementType, ReactNode } from "react";
 
 export type UserShellNavItem = {
   label: string;
@@ -11,16 +11,20 @@ export type UserShellNavItem = {
 export type UserShellProps = {
   brand?: string;
   navItems?: UserShellNavItem[];
+  activeHref?: string;
+  linkComponent?: ElementType;
   children: ReactNode;
 };
 
 export function UserShell({
   brand = "React Shop",
   navItems = [
-    { label: "Shop", href: "#" },
-    { label: "Orders", href: "#orders" },
-    { label: "Account", href: "#account" },
+    { label: "Shop", href: "/" },
+    { label: "Orders", href: "/orders" },
+    { label: "Account", href: "/account" },
   ],
+  activeHref = "/",
+  linkComponent: LinkComponent = "a",
   children,
 }: UserShellProps) {
   const user = useAuthStore((state) => state.user);
@@ -43,8 +47,8 @@ export function UserShell({
           <Toolbar disableGutters sx={{ gap: 3, minHeight: 72 }}>
             <Typography
               variant="h5"
-              component="a"
-              href="#"
+              component={LinkComponent}
+              href="/"
               sx={{
                 color: "text.primary",
                 fontFamily: '"Syne", sans-serif',
@@ -61,18 +65,27 @@ export function UserShell({
               spacing={2}
               sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}
             >
-              {navItems.map((item) => (
-                <Typography
-                  key={item.label}
-                  component="a"
-                  href={item.href}
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ textDecoration: "none", "&:hover": { color: "primary.main" } }}
-                >
-                  {item.label}
-                </Typography>
-              ))}
+              {navItems.map((item) => {
+                const selected = activeHref === item.href;
+
+                return (
+                  <Typography
+                    key={item.label}
+                    component={LinkComponent}
+                    href={item.href}
+                    variant="body2"
+                    color={selected ? "primary.main" : "text.secondary"}
+                    aria-current={selected ? "page" : undefined}
+                    sx={{
+                      fontWeight: selected ? 700 : 500,
+                      textDecoration: "none",
+                      "&:hover": { color: "primary.main" },
+                    }}
+                  >
+                    {item.label}
+                  </Typography>
+                );
+              })}
             </Stack>
 
             <Chip

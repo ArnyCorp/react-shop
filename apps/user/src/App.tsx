@@ -1,7 +1,18 @@
 import { Alert, Chip, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useAuthStore, useCan } from "@react-shop/auth";
 import { EmptyState, PageHeader, UserShell } from "@react-shop/ui";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
+import { Link as ReactRouterLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
+
+type RouterLinkAdapterProps = Omit<ComponentPropsWithoutRef<typeof ReactRouterLink>, "href" | "to"> & {
+  href: string;
+};
+
+const RouterLinkAdapter = forwardRef<HTMLAnchorElement, RouterLinkAdapterProps>(
+  function RouterLinkAdapter({ href, ...props }, ref) {
+    return <ReactRouterLink ref={ref} to={href} {...props} />;
+  },
+);
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -18,8 +29,8 @@ function HomePage() {
         description="Manage your profile and order history from a federated user workspace."
       />
       <Alert severity="info">
-        Authentication is shared through the platform auth store; shell login routing arrives in
-        Task 6.
+        Authentication is shared through the platform auth store; shell login routing will connect
+        here when the host flow is wired.
       </Alert>
     </Stack>
   );
@@ -105,8 +116,14 @@ function OrdersPage() {
 }
 
 export default function App() {
+  const location = useLocation();
+
   return (
-    <UserShell navItems={navItems}>
+    <UserShell
+      navItems={navItems}
+      linkComponent={RouterLinkAdapter}
+      activeHref={location.pathname}
+    >
       <Routes>
         <Route index element={<HomePage />} />
         <Route path="account" element={<AccountPage />} />

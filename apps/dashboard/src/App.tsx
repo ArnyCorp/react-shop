@@ -11,7 +11,18 @@ import {
 } from "@mui/material";
 import { useCan } from "@react-shop/auth";
 import { DashboardShell, EmptyState, PageHeader, StatCard } from "@react-shop/ui";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
+import { Link as ReactRouterLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
+
+type RouterLinkAdapterProps = Omit<ComponentPropsWithoutRef<typeof ReactRouterLink>, "href" | "to"> & {
+  href: string;
+};
+
+const RouterLinkAdapter = forwardRef<HTMLAnchorElement, RouterLinkAdapterProps>(
+  function RouterLinkAdapter({ href, ...props }, ref) {
+    return <ReactRouterLink ref={ref} to={href} {...props} />;
+  },
+);
 
 const mockUsers = [
   { name: "Ava Chen", email: "ava@example.com", role: "admin" },
@@ -166,8 +177,14 @@ function SettingsPage() {
 }
 
 export default function App() {
+  const location = useLocation();
+
   return (
-    <DashboardShell title="Operations dashboard">
+    <DashboardShell
+      title="Operations dashboard"
+      linkComponent={RouterLinkAdapter}
+      activeHref={location.pathname}
+    >
       <Routes>
         <Route index element={<OverviewPage />} />
         <Route path="users" element={<UsersPage />} />

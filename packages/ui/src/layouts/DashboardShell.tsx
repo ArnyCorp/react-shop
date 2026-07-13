@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useAuthStore, useCan } from "@react-shop/auth";
 import type { Permission } from "@react-shop/shared";
-import type { ReactNode } from "react";
+import type { ElementType, ReactNode } from "react";
 
 type DashboardNavItem = {
   label: string;
@@ -20,32 +20,33 @@ type DashboardNavItem = {
 };
 
 const dashboardNavItems: DashboardNavItem[] = [
-  { label: "Overview", href: "#overview" },
-  { label: "Users", href: "#users", permission: "users:read" },
-  { label: "Orders", href: "#orders", permission: "orders:read" },
-  { label: "Catalog", href: "#catalog", permission: "catalog:write" },
-  { label: "Settings", href: "#settings", permission: "settings:write" },
+  { label: "Overview", href: "/" },
+  { label: "Users", href: "/users", permission: "users:read" },
+  { label: "Orders", href: "/orders", permission: "orders:read" },
+  { label: "Settings", href: "/settings", permission: "settings:write" },
 ];
 
 export type DashboardShellProps = {
   brand?: string;
   title?: string;
+  activeHref?: string;
+  linkComponent?: ElementType;
   children: ReactNode;
 };
 
 export function DashboardShell({
   brand = "React Shop",
   title = "Dashboard",
+  activeHref = "/",
+  linkComponent: LinkComponent = "a",
   children,
 }: DashboardShellProps) {
   const user = useAuthStore((state) => state.user);
   const canReadUsers = useCan("users:read");
   const canReadOrders = useCan("orders:read");
-  const canWriteCatalog = useCan("catalog:write");
   const canWriteSettings = useCan("settings:write");
 
   const permissionVisibility: Partial<Record<Permission, boolean>> = {
-    "catalog:write": canWriteCatalog,
     "orders:read": canReadOrders,
     "users:read": canReadUsers,
     "settings:write": canWriteSettings,
@@ -95,17 +96,22 @@ export function DashboardShell({
           <Divider />
 
           <List component="nav" aria-label="Dashboard navigation" disablePadding>
-            {visibleNavItems.map((item, index) => (
-              <ListItemButton
-                key={item.label}
-                component="a"
-                href={item.href}
-                selected={index === 0}
-                sx={{ borderRadius: 2, mb: 0.5 }}
-              >
-                <ListItemText primary={item.label} />
-              </ListItemButton>
-            ))}
+            {visibleNavItems.map((item) => {
+              const selected = activeHref === item.href;
+
+              return (
+                <ListItemButton
+                  key={item.label}
+                  component={LinkComponent}
+                  href={item.href}
+                  selected={selected}
+                  aria-current={selected ? "page" : undefined}
+                  sx={{ borderRadius: 2, mb: 0.5 }}
+                >
+                  <ListItemText primary={item.label} />
+                </ListItemButton>
+              );
+            })}
           </List>
         </Stack>
       </Paper>
