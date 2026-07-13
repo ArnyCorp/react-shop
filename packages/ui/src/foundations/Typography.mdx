@@ -1,0 +1,33 @@
+import { Meta, Subtitle, Title, Typeset } from "@storybook/blocks";
+
+<Meta title="Foundations/Typography" />
+
+<Title>Typography</Title>
+
+<Subtitle>Syne headlines with Karla body copy from `shopTheme`.</Subtitle>
+
+React Shop uses **Karla** for body copy and **Syne** for headings and buttons.
+This pairing keeps dashboard data readable while giving page titles and calls to
+action a distinct shop identity.
+
+<Typeset
+  fontFamily='"Syne", "Karla", sans-serif'
+  fontSizes={[48, 40, 32, 28, 24, 20]}
+  fontWeight={700}
+  sampleText="Build a calmer commerce dashboard"
+/>
+
+<Typeset
+  fontFamily='"Karla", "Helvetica Neue", Arial, sans-serif'
+  fontSizes={[18, 16, 14, 12]}
+  fontWeight={400}
+  sampleText="Use Karla for body copy, labels, descriptions, and supporting interface text."
+/>
+
+## Theme defaults
+
+- Body font: `"Karla", "Helvetica Neue", Arial, sans-serif`
+- Heading font: `"Syne", "Karla", sans-serif`
+- Heading weights: 600-700 depending on level
+- Button font: `"Syne", "Karla", sans-serif`, weight 650, no uppercase transform
+- Heading letter spacing: h1 `-0.03em`, h2 `-0.02em`

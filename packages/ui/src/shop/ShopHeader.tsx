@@ -1,5 +1,5 @@
-import { AppBar, Badge, Container, Toolbar, Typography } from "@mui/material";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import { AppBar, Badge, Container, Toolbar, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 import { ShopButton } from "./ShopButton";
 

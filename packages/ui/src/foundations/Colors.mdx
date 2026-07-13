@@ -1,0 +1,52 @@
+import { ColorItem, ColorPalette, Meta, Subtitle, Title } from "@storybook/blocks";
+
+<Meta title="Foundations/Colors" />
+
+<Title>Colors</Title>
+
+<Subtitle>Light jade and teal tokens from `shopTheme`.</Subtitle>
+
+The UI theme uses a calm jade primary, teal secondary, mist surfaces, and deep ink
+text. Prefer these tokens over ad hoc colors so product, dashboard, and shop
+surfaces stay aligned.
+
+<ColorPalette>
+  <ColorItem
+    title="Primary / jade"
+    subtitle="Action color"
+    colors={{
+      main: "#0f6b4c",
+      dark: "#0a4a35",
+      light: "#3d9574",
+      contrastText: "#f4faf7",
+    }}
+  />
+  <ColorItem
+    title="Secondary / teal"
+    subtitle="Supporting action and accent color"
+    colors={{
+      main: "#1f7a8c",
+      dark: "#155968",
+      light: "#4d9aaa",
+      contrastText: "#f2fbfd",
+    }}
+  />
+  <ColorItem
+    title="Surfaces"
+    subtitle="Mist app background and paper cards"
+    colors={{
+      backgroundDefault: "#eef3f0",
+      backgroundPaper: "#f7faf8",
+      mist: "#d7e4dc",
+      divider: "rgba(20, 34, 27, 0.12)",
+    }}
+  />
+  <ColorItem
+    title="Ink"
+    subtitle="Primary and secondary text"
+    colors={{
+      ink: "#14221b",
+      textSecondary: "#4a5c52",
+    }}
+  />
+</ColorPalette>
