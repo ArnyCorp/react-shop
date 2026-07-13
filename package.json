@@ -1,0 +1,19 @@
+{
+  "name": "react-shop",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "dev:web": "turbo run dev --filter=@react-shop/shell --filter=@react-shop/catalog --filter=@react-shop/cart --parallel",
+    "dev:api": "pnpm --filter @react-shop/api start:dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "storybook": "pnpm --filter @react-shop/ui storybook",
+    "build-storybook": "pnpm --filter @react-shop/ui build-storybook"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.3"
+  }
+}

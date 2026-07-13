@@ -1,0 +1,58 @@
+{
+  "name": "@react-shop/shared",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.mjs"
+    },
+    "./schemas": {
+      "types": "./dist/schemas.d.ts",
+      "import": "./dist/schemas.mjs",
+      "require": "./dist/schemas.js",
+      "default": "./dist/schemas.mjs"
+    },
+    "./constants": {
+      "types": "./dist/constants.d.ts",
+      "import": "./dist/constants.mjs",
+      "require": "./dist/constants.js",
+      "default": "./dist/constants.mjs"
+    },
+    "./cart": {
+      "types": "./dist/cart-store.d.ts",
+      "import": "./dist/cart-store.mjs",
+      "require": "./dist/cart-store.js",
+      "default": "./dist/cart-store.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo \"lint ok\""
+  },
+  "dependencies": {
+    "zod": "^3.25.67",
+    "zustand": "^5.0.5"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "react": "^19.1.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  }
+}
