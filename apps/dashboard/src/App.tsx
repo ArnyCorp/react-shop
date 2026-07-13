@@ -36,6 +36,13 @@ const mockOrders = [
   { id: "ORD-1050", customer: "Riley Green", status: "Ready to ship" },
 ];
 
+function activeHrefForMount(pathname: string, mountSegment: string): string {
+  const segments = pathname.split("/").filter(Boolean);
+  const mountIndex = segments.indexOf(mountSegment);
+  const remoteSegments = mountIndex >= 0 ? segments.slice(mountIndex + 1) : segments;
+  return remoteSegments[0] ?? ".";
+}
+
 function OverviewPage() {
   return (
     <Stack spacing={3}>
@@ -86,8 +93,8 @@ function UsersPage() {
       />
       <Alert severity={canWriteUsers ? "success" : "info"}>
         {canWriteUsers
-          ? "users:write is enabled; Task 7 can attach edit actions here."
-          : "Read-only mode: Task 7 actions stay disabled until users:write is granted."}
+          ? "users:write is enabled; edit actions can be added to this workflow."
+          : "Read-only mode: edit actions are disabled until users:write is granted."}
       </Alert>
       <Paper variant="outlined" sx={{ borderRadius: 4 }}>
         <List disablePadding>
@@ -165,7 +172,7 @@ function SettingsPage() {
       <PageHeader
         eyebrow="Settings"
         title="Platform settings"
-        description="Administrative settings will be connected in a later task."
+        description="Administrative settings will be connected as the platform workflow expands."
       />
       <Paper variant="outlined" sx={{ borderRadius: 4, p: { xs: 3, md: 4 } }}>
         <Typography color="text.secondary">
@@ -178,19 +185,20 @@ function SettingsPage() {
 
 export default function App() {
   const location = useLocation();
+  const activeHref = activeHrefForMount(location.pathname, "dashboard");
 
   return (
     <DashboardShell
       title="Operations dashboard"
       linkComponent={RouterLinkAdapter}
-      activeHref={location.pathname}
+      activeHref={activeHref}
     >
       <Routes>
         <Route index element={<OverviewPage />} />
         <Route path="users" element={<UsersPage />} />
         <Route path="orders" element={<OrdersPage />} />
         <Route path="settings" element={<SettingsPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="." replace />} />
       </Routes>
     </DashboardShell>
   );

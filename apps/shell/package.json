@@ -8,13 +8,15 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --port 5000 --strictPort",
     "typecheck": "tsc --noEmit",
-    "lint": "echo \"lint ok\""
+    "lint": "echo \"lint ok\"",
+    "test": "vitest run"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.1",
     "@mui/material": "^7.1.1",
+    "@react-shop/auth": "workspace:*",
     "@react-shop/shared": "workspace:*",
     "@react-shop/ui": "workspace:*",
     "react": "^19.1.0",
@@ -28,6 +30,7 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
     "typescript": "^5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^4.1.10"
   }
 }

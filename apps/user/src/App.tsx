@@ -15,10 +15,17 @@ const RouterLinkAdapter = forwardRef<HTMLAnchorElement, RouterLinkAdapterProps>(
 );
 
 const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Orders", href: "/orders" },
-  { label: "Account", href: "/account" },
+  { label: "Home", href: "." },
+  { label: "Orders", href: "orders" },
+  { label: "Account", href: "account" },
 ];
+
+function activeHrefForMount(pathname: string, mountSegment: string): string {
+  const segments = pathname.split("/").filter(Boolean);
+  const mountIndex = segments.indexOf(mountSegment);
+  const remoteSegments = mountIndex >= 0 ? segments.slice(mountIndex + 1) : segments;
+  return remoteSegments[0] ?? ".";
+}
 
 function HomePage() {
   return (
@@ -29,8 +36,7 @@ function HomePage() {
         description="Manage your profile and order history from a federated user workspace."
       />
       <Alert severity="info">
-        Authentication is shared through the platform auth store; shell login routing will connect
-        here when the host flow is wired.
+        Authentication is shared through the platform auth store after signing in through the shell.
       </Alert>
     </Stack>
   );
@@ -117,18 +123,19 @@ function OrdersPage() {
 
 export default function App() {
   const location = useLocation();
+  const activeHref = activeHrefForMount(location.pathname, "app");
 
   return (
     <UserShell
       navItems={navItems}
       linkComponent={RouterLinkAdapter}
-      activeHref={location.pathname}
+      activeHref={activeHref}
     >
       <Routes>
         <Route index element={<HomePage />} />
         <Route path="account" element={<AccountPage />} />
         <Route path="orders" element={<OrdersPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="." replace />} />
       </Routes>
     </UserShell>
   );

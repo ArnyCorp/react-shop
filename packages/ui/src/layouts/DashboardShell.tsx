@@ -20,10 +20,10 @@ type DashboardNavItem = {
 };
 
 const dashboardNavItems: DashboardNavItem[] = [
-  { label: "Overview", href: "/" },
-  { label: "Users", href: "/users", permission: "users:read" },
-  { label: "Orders", href: "/orders", permission: "orders:read" },
-  { label: "Settings", href: "/settings", permission: "settings:write" },
+  { label: "Overview", href: "." },
+  { label: "Users", href: "users", permission: "users:read" },
+  { label: "Orders", href: "orders", permission: "orders:read" },
+  { label: "Settings", href: "settings", permission: "settings:write" },
 ];
 
 export type DashboardShellProps = {
@@ -55,6 +55,7 @@ export function DashboardShell({
   const visibleNavItems = dashboardNavItems.filter(
     (item) => !item.permission || permissionVisibility[item.permission] === true,
   );
+  const activeKey = normalizeHref(activeHref);
 
   return (
     <Box
@@ -97,7 +98,7 @@ export function DashboardShell({
 
           <List component="nav" aria-label="Dashboard navigation" disablePadding>
             {visibleNavItems.map((item) => {
-              const selected = activeHref === item.href;
+              const selected = activeKey === normalizeHref(item.href);
 
               return (
                 <ListItemButton
@@ -126,4 +127,9 @@ export function DashboardShell({
       </Box>
     </Box>
   );
+}
+
+function normalizeHref(href: string): string {
+  const segments = href.split("?")[0].split("#")[0].split("/").filter(Boolean);
+  return segments.at(-1) ?? ".";
 }

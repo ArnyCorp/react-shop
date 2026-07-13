@@ -19,9 +19,9 @@ export type UserShellProps = {
 export function UserShell({
   brand = "React Shop",
   navItems = [
-    { label: "Shop", href: "/" },
-    { label: "Orders", href: "/orders" },
-    { label: "Account", href: "/account" },
+    { label: "Shop", href: "." },
+    { label: "Orders", href: "orders" },
+    { label: "Account", href: "account" },
   ],
   activeHref = "/",
   linkComponent: LinkComponent = "a",
@@ -29,6 +29,7 @@ export function UserShell({
 }: UserShellProps) {
   const user = useAuthStore((state) => state.user);
   const accountName = user?.name ?? "Guest";
+  const activeKey = normalizeHref(activeHref);
 
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
@@ -48,7 +49,7 @@ export function UserShell({
             <Typography
               variant="h5"
               component={LinkComponent}
-              href="/"
+              href="."
               sx={{
                 color: "text.primary",
                 fontFamily: '"Syne", sans-serif',
@@ -66,7 +67,7 @@ export function UserShell({
               sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}
             >
               {navItems.map((item) => {
-                const selected = activeHref === item.href;
+                const selected = activeKey === normalizeHref(item.href);
 
                 return (
                   <Typography
@@ -103,4 +104,9 @@ export function UserShell({
       </Container>
     </Box>
   );
+}
+
+function normalizeHref(href: string): string {
+  const segments = href.split("?")[0].split("#")[0].split("/").filter(Boolean);
+  return segments.at(-1) ?? ".";
 }
