@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import {
   type AuthUser,
   permissionsForRole,
@@ -85,6 +85,17 @@ export class UsersService {
       role: "user",
     });
     this.users.push(user);
+    return this.toAuthUser(user);
+  }
+
+  updateRole(id: string, role: Role): AuthUser {
+    const user = this.users.find((candidate) => candidate.id === id);
+    if (!user) {
+      throw new NotFoundException(`User ${id} not found`);
+    }
+
+    user.role = role;
+    user.permissions = permissionsForRole(role);
     return this.toAuthUser(user);
   }
 

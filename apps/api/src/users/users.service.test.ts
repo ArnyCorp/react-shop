@@ -1,3 +1,4 @@
+import { NotFoundException } from "@nestjs/common";
 import { describe, expect, it } from "vitest";
 import { permissionsForRole } from "@react-shop/shared";
 import { compareSync } from "bcryptjs";
@@ -40,5 +41,27 @@ describe("UsersService", () => {
       permissions: permissionsForRole("user"),
     });
     expect(created).not.toHaveProperty("passwordHash");
+  });
+
+  it("updates a user's role with derived permissions without exposing password hashes", () => {
+    const usersService = new UsersService();
+
+    const updated = usersService.updateRole("seed-support", "manager");
+
+    expect(updated).toMatchObject({
+      id: "seed-support",
+      role: "manager",
+      permissions: permissionsForRole("manager"),
+    });
+    expect(updated).not.toHaveProperty("passwordHash");
+    expect(usersService.findByEmail("support@react-shop.dev")?.permissions).toEqual(
+      permissionsForRole("manager"),
+    );
+  });
+
+  it("throws NotFoundException when updating a missing user's role", () => {
+    const usersService = new UsersService();
+
+    expect(() => usersService.updateRole("missing-user", "admin")).toThrow(NotFoundException);
   });
 });

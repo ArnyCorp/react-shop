@@ -1,10 +1,6 @@
 import {
-  Alert,
   Box,
   Chip,
-  List,
-  ListItem,
-  ListItemText,
   Paper,
   Stack,
   Typography,
@@ -13,6 +9,7 @@ import { useCan } from "@react-shop/auth";
 import { DashboardShell, EmptyState, PageHeader, StatCard } from "@react-shop/ui";
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { Link as ReactRouterLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { UsersPage } from "./pages/UsersPage";
 
 type RouterLinkAdapterProps = Omit<ComponentPropsWithoutRef<typeof ReactRouterLink>, "href" | "to"> & {
   href: string;
@@ -23,12 +20,6 @@ const RouterLinkAdapter = forwardRef<HTMLAnchorElement, RouterLinkAdapterProps>(
     return <ReactRouterLink ref={ref} to={href} {...props} />;
   },
 );
-
-const mockUsers = [
-  { name: "Ava Chen", email: "ava@example.com", role: "admin" },
-  { name: "Milo Grant", email: "milo@example.com", role: "support" },
-  { name: "Nora Patel", email: "nora@example.com", role: "manager" },
-];
 
 const mockOrders = [
   { id: "ORD-1048", customer: "Taylor Smith", status: "Packed" },
@@ -67,48 +58,6 @@ function OverviewPage() {
         <StatCard value="37" label="Open tickets" helperText="Support queue placeholder" />
         <StatCard value="98.7%" label="Uptime" helperText="Platform health mock" />
       </Box>
-    </Stack>
-  );
-}
-
-function UsersPage() {
-  const canReadUsers = useCan("users:read");
-  const canWriteUsers = useCan("users:write");
-
-  if (!canReadUsers) {
-    return (
-      <EmptyState
-        title="Users are unavailable"
-        description="Your current role does not include users:read."
-      />
-    );
-  }
-
-  return (
-    <Stack spacing={3}>
-      <PageHeader
-        eyebrow="Users"
-        title="User management"
-        description="A placeholder staff list for the upcoming management workflow."
-      />
-      <Alert severity={canWriteUsers ? "success" : "info"}>
-        {canWriteUsers
-          ? "users:write is enabled; edit actions can be added to this workflow."
-          : "Read-only mode: edit actions are disabled until users:write is granted."}
-      </Alert>
-      <Paper variant="outlined" sx={{ borderRadius: 4 }}>
-        <List disablePadding>
-          {mockUsers.map((user) => (
-            <ListItem
-              key={user.email}
-              divider
-              secondaryAction={<Chip label={user.role} size="small" />}
-            >
-              <ListItemText primary={user.name} secondary={user.email} />
-            </ListItem>
-          ))}
-        </List>
-      </Paper>
     </Stack>
   );
 }
