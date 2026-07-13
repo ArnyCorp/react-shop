@@ -19,5 +19,6 @@ API smoke server: `PORT=3002 pnpm --filter @react-shop/api start:prod`.
 | `manager@react-shop.dev` | `manager` | `201` / `manager` | `GET /users` | `200` | `PATCH /users/seed-user/role` | `403` | Pass |
 | `support@react-shop.dev` | `support` | `201` / `support` | `GET /users` | `200` | `PATCH /users/seed-user/role` | `403` | Pass |
 | `user@react-shop.dev` | `user` | `201` / `user` | `GET /products` | `200` | `GET /users` | `403` | Pass |
+| `user@react-shop.dev` | `user` | `201` / `user` | `GET /orders` | `200` | unauthenticated `GET /orders` | `401` | Pass |
 
-No verification failures required code fixes.
+`GET /products` remains public for guest catalog browsing. `GET`/`POST /orders` require JWT plus `orders:read` / `orders:write` respectively.
